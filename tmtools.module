@@ -1,0 +1,50 @@
+<?php
+/*
+ * $Id: tmtools.module 9 2012-11-12 21:46:03Z as $
+ */
+
+require 'functions.php';
+
+/*
+ * Implementation of hook_init()
+*/
+function tmtools_init() {
+    // Display message if the site is scheduled to be shut down for maintenance soon.
+    if ($t = variable_get('tm_maintenance_time', FALSE)) {
+        $seconds_remaining = strtotime($t) - time();
+        if ($seconds_remaining > 0 ) {
+            $minutes_remaining = floor($seconds_remaining / 60) + 1;
+            $s = ($minutes_remaining > 1 ? 's' : '');
+            drupal_set_message('This site will close briefly for maintenance at '. format_date(strtotime($t), 'custom', 'g:i A')
+                    .' (less than '. $minutes_remaining ." minute{$s} from now).", 'error', FALSE);
+        } else {
+            /* if the time is not between now and midnight, just delete it. otherwise once we
+             * cross midnight tonight it will be "valid" again and cause us to start printing
+             * bogus warning messages.
+             */
+            variable_del('tm_maintenance_time');
+        }
+    }
+}
+
+
+
+/* Implementation of hook_menu()
+ */
+function tmtools_menu() {
+    $items['admin/settings/tmtools'] = array(
+        'title' => 'TwoMice Tools configuration',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('_tmtools_settings'),
+        'access arguments' => array('administer site configuration'),
+        'type' => MENU_NORMAL_ITEM,
+    );
+    return $items;
+}
+
+
+/* Implementation of hook_civicrm_config
+ */
+function tmtools_civicrm_config( &$config ) {
+  _tmtools_civicrm_initialize();
+}

@@ -1,0 +1,6 @@
+name = TwoMice Tools
+description = Common helper module for TwoMice modules
+version = 7.x-1.1
+package = TwoMice
+core = 7.x
+php = 5.2
