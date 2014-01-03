@@ -16,6 +16,7 @@
 
     * Parameters
     *    var = the variable to dump
+    *    label = the label to use when dumping
     */
     function smarty_function_dsm($params, &$smarty) {
         if (!array_key_exists('var', $params)) {
@@ -29,5 +30,5 @@
             return;
         }
 
-        dsm($params['var']);
+        dsm($params['var'], $params['label']);
     }
