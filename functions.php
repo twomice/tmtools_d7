@@ -45,6 +45,20 @@ function tm_queryp($query) {
 }
 
 /**
+ * Format the whitespace in a SQL string to make it easier to read, using
+ * SqlFormatter library.
+ *
+ * @param String  $string    The SQL string
+ * @param boolean $highlight If true, syntax highlighting will also be performed
+ *
+ * @return String The formatted SQL string
+ */
+function tm_sqlformat($sql, $highlight = FALSE) {
+  module_load_include('php', 'tmtools', 'vendor/sql-formatter/lib/SqlFormatter');
+  return SqlFormatter::format($sql, $highlight);  
+}
+
+/**
  * Initialize tmtools
  */
 function _tmtools_civicrm_initialize() {
